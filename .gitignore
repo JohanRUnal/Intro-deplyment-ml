@@ -5,4 +5,4 @@ deployVenv/
 *.pkl
 report.txt
 *.png
-__pychache__/
+__pycache__/
