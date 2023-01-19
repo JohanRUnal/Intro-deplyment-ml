@@ -20,7 +20,7 @@ jobs:
           pip install -r requirements_test.txt
       - name: Test Api
         run: |
-         dvc pull modelo/model.pkl -r model_tracker
+         dvc pull model/model.pkl -r model_tracker
          pytest tests.py
 
 
