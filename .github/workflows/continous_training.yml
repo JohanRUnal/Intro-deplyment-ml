@@ -27,7 +27,7 @@ on:
             source venv/bin/activate
             pip install -r src/requirements.txt
             dvc pip install dvc[s3]
-            dvc pull model/model.pkl.dvc -r model_tracker
+            dvc pull model/model.pkl -r model_tracker
             dvc unprotect model/model.pkl 
             dvc repro -r
             echo "Training Completed!"
@@ -41,15 +41,15 @@ on:
         - uses: ad-m/github-push-action@master
           with:
             github_token: ${{ secrets.GITHUB_TOKEN}}
-            branch: ${{ github.ref}}
+            branch: ${{ github.ref }}
         - uses: Iterative/setup-cml@v1
         - name: publish metrics
           env:
-            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
-          cat report.txt >> report.md
-          cml-pusblish prediction_behavior.png --md >> report.md
-          cml-send-coment report.md
+            cat report.txt >> report.md
+            cml-pusblish prediction_behavior.png --md >> report.md
+            cml-send-coment report.md
 
 
 
