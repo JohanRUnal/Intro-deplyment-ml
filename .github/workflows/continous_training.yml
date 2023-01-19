@@ -37,6 +37,7 @@ jobs:
         run: |
           git config --local user.email "josrodriguezmo@unal.edu.co"
           git config --local user.name "model-deployment"
+          git add model/model.pkl.dvc
           git commit -m "Updating model serialization"
       - uses: ad-m/github-push-action@master
         with:
