@@ -1,0 +1,4 @@
+['remote "dataset_tracker"']
+    url = s3://storagedvc/dataset
+['remote "model_tracker"']
+    url = s3://storagedvc/modelo
