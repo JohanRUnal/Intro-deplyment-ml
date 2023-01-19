@@ -31,8 +31,8 @@ jobs:
           dvc unprotect model/model.pkl 
           dvc repro -f
           echo "Training Completed!"
-          dvc add model/model.pkl.csv
-          dvc push model/model.pkl.csv -r model_tracker
+          dvc add model/model.pkl.dvc
+          dvc push model/model.pkl.dvc -r model_tracker
       - name: Commit .dvc file changes
         run: |
           git config --local user.email "josrodriguezmo@unal.edu.co"
