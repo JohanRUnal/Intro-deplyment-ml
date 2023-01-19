@@ -29,7 +29,7 @@ jobs:
           pip install -r src/requirements.txt
           dvc pull model/model.pkl -r model_tracker
           dvc unprotect model/model.pkl 
-          dvc repro -r
+          dvc repro -f
           echo "Training Completed!"
           dvc add model/model.pkl.csv
           dvc push model/model.pkl.csv -r model_tracker
