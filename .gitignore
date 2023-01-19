@@ -1,0 +1,5 @@
+deployVenv/
+*.json
+-ipynb.check_points
+*.csv
+*.pkl
