@@ -1,5 +1,8 @@
 deployVenv/
 *.json
--ipynb.check_points
+-ipynb.check_points/
 *.csv
 *.pkl
+report.txt
+*.png
+__pychache__/
