@@ -1,0 +1,22 @@
+name: continous integration/ contonous deployment
+on: [push]
+jobs:
+  ci_cd:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ROLE_ARN: ${{ secrets.ROLE_ARN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set environment and bring the model
+        run: |
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+          pip install dvc[s3]
+          dvc pull model/model.pkl -r model_tracker
+      - name: Set up AWS SDK
+        uses: 
