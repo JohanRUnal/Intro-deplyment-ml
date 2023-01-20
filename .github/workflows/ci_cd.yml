@@ -7,7 +7,6 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
-      ROLE_ARN: ${{ secrets.ROLE_ARN }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -25,11 +24,8 @@ jobs:
         env: 
           REGISTRY: ${{ steps.login.ecr.outputs.registry }}
           REPOSITORY: appfastapitest
-          IMAGE_TAG: latest
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          echo " este es el image REGISTRY: $REGISTRY"
-          echo " este es el image REPOSITORY: $REPOSITORY"
-          echo " este es el image tag: $IMAGE_TAG"
-          docker build -t $REGISTRY//$REPOSITORY:$IMAGE_TAG .
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
