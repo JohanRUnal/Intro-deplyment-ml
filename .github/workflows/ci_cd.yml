@@ -53,7 +53,7 @@ jobs:
           build-command: npm install
           start-command: npm start
       - name: App Runner Output
-        run: echo "App Runner Output  ${{ steps.deploy-apprunner.outputs.service-url }}" 
+        run: echo "App Runner output  ${{ steps.deploy-apprunner.outputs.service-url }}" 
 
 
 
