@@ -27,7 +27,9 @@ jobs:
           REPOSITORY: appfastapitest
           IMAGE_TAG: latest
         run: |
-          echo $IMAGE_TAG
+          echo " este es el image REGISTRY: $REGISTRY"
+          echo " este es el image REPOSITORY: $REPOSITORY"
+          echo " este es el image tag: $IMAGE_TAG"
           docker build -t $REGISTRY//$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 

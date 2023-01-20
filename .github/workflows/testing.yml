@@ -1,5 +1,7 @@
 name: Testing API
-on: [push, pull_request]
+on: 
+  schedule: 
+    - cron: '30 * * * 4'
 jobs:
   testing-api:
     runs-on:  ubuntu-latest
