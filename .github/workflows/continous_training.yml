@@ -4,7 +4,7 @@ on:
     branches:
       -  workflow_continuos_training
   schedule:
-    - cron: '30 * * * 4'
+    - cron: '30 * * * 5'
   workflow_dispatch:
     input:
       reason:
@@ -36,7 +36,7 @@ jobs:
       - name: Commit .dvc file changes
         run: |
           git config --local user.email "josrodriguezmo@unal.edu.co"
-          git config --local user.name "model-deployment"
+          git config --local user.name "github-actions[bot]"
           git add model/model.pkl.dvc
           git commit -m "Updating model serialization"
       - uses: ad-m/github-push-action@master
