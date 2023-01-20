@@ -8,6 +8,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       ROLE_ARN: ${{ secrets.ROLE_ARN}}
+      AWS_CONNECTION_SOURCE_ARN: ${{ secrets.AWS_CONNECTION_SOURCE_ARN }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -36,6 +37,7 @@ jobs:
           service: app-runner-image-deploy-service
           image: ${{ steps.build-image.outputs.image }}
           access-role-arn: ${{ secrets.ROLE_ARN }}
+          source-connection-arn: ${{ secrets.AWS_CONNECTION_SOURCE_ARN }}
           runtime: NODEJS_12
           region: ${{ secrets.AWS_REGION}}
           cpu: 1
