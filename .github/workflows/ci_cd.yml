@@ -28,4 +28,21 @@ jobs:
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: Deploy to app runner
+        id: deploy-app runner
+        uses: awslabs/amazon-app-runner-deploy@main # Deploy app runner service
+        with:
+          service: app-runner-git-deploy-service
+          image: ${{ steps.build-image.outputs.image }}
+          access-rol-arn: ${{ secrets.ROLE_ARN }}
+          runtime: NODEJS_12
+          region: ${{ secrets.AWS_REGION}}
+          cpu: 1
+          memory: 2
+          port: 8000
+          wait-for-service-stability: true
+      - name: App Runner Output
+        run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}" 
+
+
 
