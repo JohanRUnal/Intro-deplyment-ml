@@ -37,6 +37,7 @@ jobs:
           service: app-runner-git-deploy-service
           image: ${{ steps.build-image.outputs.image }}
           access-role-arn: ${{ secrets.ROLE_ARN }}
+          source-connection-arn: ${{ secrets.AWS_CONNECTION_SOURCE_ARN }}
           runtime: NODEJS_12
           region: ${{ secrets.AWS_REGION}}
           cpu: 1
