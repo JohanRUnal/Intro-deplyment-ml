@@ -27,7 +27,7 @@ opening_data = pd.read_csv(StringIO(gross_data_path))
 
 numeric_columns_mask = (movies_data.dtypes == float) | (movies_data.dtypes == int)
 numeric_columns = [column for column in numeric_columns_mask.index if numeric_columns_mask[column]]
-movies_data = movies_data[numeric_columns + ["movie_title", "cast_total_facebook_likes"]]
+movies_data = movies_data[numeric_columns + ["movie_title"]]
 
 
 fin_data = fin_data[['movie_title', 'production_budget', 'worldwide_gross']]
