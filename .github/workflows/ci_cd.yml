@@ -38,12 +38,11 @@ jobs:
         id: deploy-apprunner
         uses: awslabs/amazon-app-runner-deploy@main # Deploy app runner service
         with:
-          service: none
+          service: app-runner-git-deploy-service
           image: ${{ steps.build-image.outputs.image }}
           access-role-arn: ${{ secrets.ROLE_ARN }}
           runtime: NODEJS_16
           region: ${{ secrets.AWS_REGION}}
-          branch: workflow_CI_CD
           cpu: 1
           memory: 2
           wait-for-service-stability-seconds: 50
