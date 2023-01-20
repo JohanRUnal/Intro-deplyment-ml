@@ -10,7 +10,7 @@ jobs:
       ROLE_ARN: ${{ secrets.ROLE_ARN }}
     steps:
       - name: Checkout repo
-        uses: actions/aws aws@v2
+        uses: actions/checkout@v2
       - name: Set environment and bring the model
         run: |
           pip3 install virtualenv
