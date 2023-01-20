@@ -9,6 +9,9 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       ROLE_ARN: ${{ secrets.ROLE_ARN}}
       AWS_CONNECTION_SOURCE_ARN: ${{ secrets.AWS_CONNECTION_SOURCE_ARN }}
+    permissions: 
+      id-token: write
+      contents: read
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
