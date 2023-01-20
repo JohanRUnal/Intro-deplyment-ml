@@ -22,7 +22,7 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - name: Build, tag, push docker image to amazon ECR
+      - name: build-image
         env: 
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: appfastapitest
@@ -35,7 +35,7 @@ jobs:
         uses: awslabs/amazon-app-runner-deploy@main # Deploy app runner service
         with:
           service: app-runner-git-deploy-service
-          image: ${{ steps.Build, tag, push docker image to amazon ECR.outputs.image }}
+          image: ${{ steps.build-image.outputs.image }}
           access-role-arn: ${{ secrets.ROLE_ARN }}
           runtime: NODEJS_12
           region: ${{ secrets.AWS_REGION}}
