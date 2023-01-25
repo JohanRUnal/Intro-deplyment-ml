@@ -1,7 +1,7 @@
 name: Continous Trainig
 on: 
   schedule:
-    - cron: '18 20 24 1 2'
+    - cron: '5 * * * *'
   workflow_dispatch:
     input:
       reason:
