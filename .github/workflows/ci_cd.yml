@@ -50,7 +50,7 @@ jobs:
           wait-for-service-stability-seconds: 50
           port: 8000
       - name: App Runner Output
-        run: echo "App Runner output  ${{ steps.deploy-apprunner.outputs.service-url }}" 
+        run: echo "App Runner Output  ${{ steps.deploy-apprunner.outputs.service-url }}" 
 
 
 
