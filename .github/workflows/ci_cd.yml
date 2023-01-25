@@ -1,5 +1,19 @@
 name: continous integration/ contonous deployment
-on: [push]
+on:
+  push:
+    branches:
+      - "main"
+  workflow_run:
+    workflows: ["Continous Trainig"] 
+    branches: ["main"]
+    types:
+      -completed
+  workflow_dispatch:
+  input:
+    reason:
+      description: why to run this?
+      required: false
+      default: running CI/CD
 jobs:
   ci_cd:
     runs-on: ubuntu-latest
