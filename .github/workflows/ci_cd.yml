@@ -1,0 +1,69 @@
+name: continous integration/ contonous deployment
+on:
+  push:
+    branches:
+      - "main"
+  workflow_run:
+    workflows: ["Continous Trainig"] 
+    branches: ["main"]
+    types:
+      -completed
+  workflow_dispatch:
+    input:
+      reason:
+        description: why to run this?
+        required: false
+        default: running CI/CD
+jobs:
+  ci_cd:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ROLE_ARN: ${{ secrets.ROLE_ARN}}
+      AWS_CONNECTION_SOURCE_ARN: ${{ secrets.AWS_CONNECTION_SOURCE_ARN }}
+    permissions: 
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set environment and bring the model
+        run: |
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+          pip install dvc[s3]
+          dvc pull model/model.pkl -r model_tracker
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env: 
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: appfastapitest
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
+      - name: Deploy to app runner
+        id: deploy-apprunner
+        uses: awslabs/amazon-app-runner-deploy@main # Deploy app runner service
+        with:
+          service: app-runner-build-deploy-service
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: ${{ secrets.ROLE_ARN }}
+          runtime: NODEJS_16
+          region: ${{ secrets.AWS_REGION}}
+          cpu: 1
+          memory: 2
+          wait-for-service-stability-seconds: 3000
+          port: 8000
+      - name: App Runner Output
+        run: echo "App Runner output  ${{ steps.deploy-apprunner.outputs.service-url }}" 
+
+
+

@@ -1,0 +1,59 @@
+name: Continous Trainig
+on: 
+  schedule:
+    - cron: '5 * * * *'
+  workflow_dispatch:
+    input:
+      reason:
+        description: why to run this?
+        required: false
+        default: running CT
+jobs:
+  continous-training:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v2
+      - name: Train model
+        env: 
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+          pip install dvc[s3]
+          pip install -r src/requirements.txt
+          dvc pull model/model.pkl -r model_tracker
+          dvc unprotect model/model.pkl 
+          dvc repro -f
+          echo "Training Completed!"
+          dvc add model/model.pkl 
+          dvc push model/model.pkl.dvc -r model_tracker
+      - name: Commit .dvc file changes
+        run: |
+          git config --local user.email "josrodriguezmo@unal.edu.co"
+          git config --local user.name "model-deployment"
+          git add model/model.pkl.dvc
+          git commit -m "Updating model serialization"
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      - uses: iterative/setup-cml@v1
+      - name: publish metrics
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat report.txt >> report.md
+          cml-pusblish prediction_behavior.png --md >> report.md
+          cml-send-coment report.md
+
+
+
+
+
+          
+          
+
+
