@@ -9,11 +9,11 @@ on:
     types:
       -completed
   workflow_dispatch:
-  input:
-    reason:
-      description: why to run this?
-      required: false
-      default: running CI/CD
+    input:
+      reason:
+        description: why to run this?
+        required: false
+        default: running CI/CD
 jobs:
   ci_cd:
     runs-on: ubuntu-latest
